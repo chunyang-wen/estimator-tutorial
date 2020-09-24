@@ -96,10 +96,10 @@ def main():
             target(base, get_config_proto(model_dir), pid)
             memory_usage(pid, prefix="In parent after export")
     elif args.action == "export":
-        session = tf.Session()  # 故意创建 Session，模拟真实过程
+        session = tf.Session()  # test whether multiple session affects
         base = os.path.join(model_dir, "test")
         subprocess.check_call("rm -rf %s" % base, shell=True)
-        use_thread = False  # 是否使用线程
+        use_thread = False  # whether use multiple threads
         for _ in range(300):
             memory_usage(pid, prefix="In parent before")
             if use_thread:
@@ -209,7 +209,6 @@ def target(export_dir, config, pid):
     print("Result dir: ", result_dir)
     time.sleep(1)
     print("Show stats:")
-    clean(estimator)
     print("===== after =====")
     # memory_usage(pid)
     print("=====common types=====")
